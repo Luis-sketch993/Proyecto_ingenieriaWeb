@@ -1,0 +1,78 @@
+.carousel-item img {
+  height: 400px; 
+  object-fit: cover;
+}
+
+.carousel-caption button {
+  background-color: #0d6efd;   
+  color: white;                 
+  border: none;                 
+  border-radius: 50px;          
+  padding: 10px 25px;           
+  font-size: 1rem;              
+  cursor: pointer;              
+  transition: background-color 0.3s ease; 
+}
+
+.carousel-caption button:hover {
+  background-color: #084298;   
+}
+
+.cont3{
+  display: flex;          
+  justify-content: center; 
+  align-items: center;     
+  gap: 20px;               
+  padding: 20px;           
+  background-color: #f8f9fa; 
+  height: auto;
+}
+
+.image-wrapper {
+  position: relative;  /* importante para que el texto se superponga */
+  width: 48%;
+}
+
+.image-wrapper img{
+  width: 100%;
+  height: auto;
+  border-radius: 10px;     
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2); 
+}
+
+.image-text {
+  position: absolute;
+  bottom: 10%;           /* distancia desde la parte inferior */
+  left: 10%;             /* distancia desde la izquierda */
+  color: white;          
+  background-color: rgba(0,0,0,0); 
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.cont3 button {
+  background-color: #0d6efd;   
+  color: white;                 
+  border: none;                 
+  border-radius: 50px;          
+  padding: 10px 25px;           
+  font-size: 1rem;              
+  cursor: pointer;              
+  transition: background-color 0.3s ease; 
+}
+
+.cont3 button:hover {
+  background-color: #084298;   
+}
+
+
+.cont4{
+	display: flex;
+	justify-content: center; 
+  align-items: center; 
+}
+
+.card-img-top {
+  height: 220px;       /* ajusta el tamaño fijo de las imágenes */
+  object-fit: cover;   /* recorta sin deformar */
+}
