@@ -71,3 +71,8 @@
 	justify-content: center; 
   align-items: center; 
 }
+
+.card-img-top {
+  height: 220px;       /* ajusta el tamaño fijo de las imágenes */
+  object-fit: cover;   /* recorta sin deformar */
+}
