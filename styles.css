@@ -76,3 +76,103 @@
   height: 220px;       /* ajusta el tamaño fijo de las imágenes */
   object-fit: cover;   /* recorta sin deformar */
 }
+
+.cont4 {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+  align-items: stretch;
+  padding: 20px;
+}
+
+.card {
+  width: 15rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 450px; /* 🔧 puedes subir o bajar este valor */
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  border-radius: 10px;
+  overflow: hidden;
+  background-color: #fff;
+}
+
+.card img {
+  width: 100%;
+  height: 200px; /* más espacio para mostrar bien la foto */
+  object-fit: contain; /* 👈 muestra toda la imagen sin recortarla */
+  background-color: #f8f9fa; /* fondo gris claro si hay transparencia */
+  padding: 10px;
+
+}
+
+.card-body {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex-grow: 1;
+  padding: 15px;
+  text-align: center;
+}
+
+.card-title {
+  font-size: 15px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.card-text {
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+.btn {
+  margin-top: auto;
+  align-self: center;
+}
+
+.categorias {
+  display: flex;
+  flex-wrap: wrap;           /* permite varias filas */
+  justify-content: center;   /* centra todo horizontalmente */
+  gap: 30px;                 /* espacio entre categorías */
+  padding: 30px;
+}
+
+.categoria {
+  display: flex;
+  flex-direction: column;    /* imagen arriba, texto abajo */
+  align-items: center;
+  text-align: center;
+  width: 120px;              /* ancho fijo para todos */
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.categoria:hover {
+  transform: scale(1.05);    /* efecto al pasar el mouse */
+}
+
+.categoria img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;        /* hace las imágenes circulares */
+  object-fit: cover;         /* recorta sin deformar */
+  background-color: #f2f2f2; /* fondo suave */
+  padding: 10px;
+}
+
+.categoria p {
+  margin-top: 10px;
+  font-family: "Poppins", sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+  color: #333;
+}
+
+
+
+
+
+
