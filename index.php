@@ -1,5 +1,11 @@
 <?php
 session_start();
+
+include 'conexion.php';
+
+$sql = "SELECT id, nombre, descripcion, precio, imagen FROM productos";
+$result = $conn->query($sql);
+
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -11,6 +17,7 @@ session_start();
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
 	<link rel="stylesheet" type="text/css" href="styles.css">
+	<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 
 	<title>Second Use | Tecnología reacondicionada</title>
 </head>
@@ -40,7 +47,7 @@ session_start();
 		      	<h1 class="d-flex align-items-center gap-2">
 			        <a href="index.php" class="text-decoration-none text-dark d-flex align-items-center gap-2">
 			          Second Use
-			          <img src="image/logo.jpeg" alt="Logo" style="height: 70px;">
+			          <img src="image/logo2.jpeg" alt="Logo" style="height: 70px;">
 			        </a>
 		      	</h1>
 
@@ -67,7 +74,32 @@ session_start();
 
 		        	<li class="nav-item">
 		          		<a class="nav-link" href="#"><i class="bi bi-heart"></i> Favoritos</a>
+						
 		        	</li>
+
+					<li class="nav-item">
+		          		<a class="nav-link d-inline-flex align-items-center position-relative" href="carrito.php">
+							<i class="bi bi-cart"></i> carrito</a>
+							<span class="ms-1">Carrito</span>
+						
+					<?php
+					$contador = 0;
+					if (isset($_SESSION['carrito'])) {
+						foreach ($_SESSION['carrito'] as $item) {
+							$contador += $item['cantidad'];
+						}
+				}
+
+
+				if ($contador > 0): ?>
+				<span class="badge rounded-pill bg-danger ms-2" style="font-size: 0.75rem; vertical-align: middle;">
+					<?= $contador ?>
+				</span>
+				<?php endif; ?>
+  				</a>
+			</li>	
+
+
 		      	</ul>
 	    	</div>
 	  	</div>
@@ -111,7 +143,7 @@ session_start();
 	    <div class="carousel-caption text-start" style="position: absolute; top: 50%; left: 5%; transform: translateY(-50%); max-width: 50%;">
 		    <h5 class="fs-1">Tecnología confiable, al alcance de todos</h5>
 		    <p>Compra seguro, usa confiado y paga seguro</p>
-		    <button class="btn btn-dark">Comprar</button>
+			<a href="productos.html" class="btn btn-dark">Comprar</a>
 	    </div>
 	  </div>
 	</div>
@@ -123,7 +155,9 @@ session_start();
 	    <div class="image-text">
 	      <h3>Iphone 17 Pro Max</h3>
 	      <p>Rendimiento fuera de serie</p>
-	      <button class="btn btn-dark">Comprar</button>
+
+		  <a href="celulares.html" class="btn btn-dark">Tienda</a>
+	
 	    </div>
 	  </div>
 
@@ -132,24 +166,74 @@ session_start();
 	    <div class="image-text">
 	      <h3>Lleva tu sonido donde quieras</h3>
 	      <p>Mejores marcas en audífonos</p>
-	      <button class="btn btn-dark">Comprar</button>
-	    </div>
+		  <a href="audio.html" class="btn btn-dark">Comprar</a>
+	      
+		  
+ 	    </div>
 	  </div>
 	</div>
 
-	<!-- TARJETAS DE PRODUCTOS -->
-	<div class="cont4 d-flex flex-wrap gap-3 justify-content-center">
-		<?php for ($i = 1; $i <= 4; $i++): ?>
-			<div class="card" style="width: 18rem;">
-			  <img src="image/I.webp" class="card-img-top" alt="Producto">
-			  <div class="card-body">
-			    <h5 class="card-title">Producto <?= $i ?></h5>
-			    <p class="card-text">Descripción breve del producto reacondicionado número <?= $i ?>.</p>
-			    <a href="#" class="btn btn-primary">Ver más</a>
-			  </div>
-			</div>
-		<?php endfor; ?>
-	</div>
 
+<div class="cont4 d-flex flex-wrap gap-3 justify-content-center">
+  <?php while($row = $result->fetch_assoc()): ?>
+    <div class="card" style="width: 15rem;">
+		<a href="detalle_producto.php?id=<?= $row['id'] ?>">
+        <img src="<?= htmlspecialchars($row['imagen']) ?>" class="card-img-top" alt="<?= htmlspecialchars($row['nombre']) ?>">
+      </a>
+      <div class="card-body">
+        <p class="card-text fw-bold"><?= htmlspecialchars($row['nombre']) ?></p>
+        <p class="text-muted">S/. <?= number_format($row['precio'], 2) ?></p>
+        <a href="detalle_producto.php?id=<?= $row['id'] ?>" class="btn btn-primary">Ver detalles</a>
+      </div>
+    </div>
+  <?php endwhile; ?>
+</div>
+					
+
+<div class="categorias">
+  <div class="categoria">
+    <img src="image/lap.avif" alt="Computadoras">
+    <p>Computadoras</p>
+  </div>
+  <div class="categoria">
+    <img src="image/celu.webp" alt="Celulares">
+    <p>Celulares</p>
+  </div>
+  <div class="categoria">
+    <img src="image/dronn.avif" alt="Drones y cámaras">
+    <p>Drones y cámaras</p>
+  </div>
+  <div class="categoria">
+    <img src="image/immg.png" alt="Oferta">
+    <p>Oferta</p>
+  </div>
+  <div class="categoria">
+    <img src="image/img.jpeg" alt="Tabletas">
+    <p>Tabletas</p>
+  </div>
+  <div class="categoria">
+    <img src="image/los.webp" alt="Más vendidos">
+    <p>Más vendidos</p>
+  </div>
+  <div class="categoria">
+    <img src="image/tv.jpeg" alt="T.V. y cine en casa">
+    <p>T.V. y cine en casa</p>
+  </div>
+  <div class="categoria">
+    <img src="image/sm.webp" alt="Tecnología portátil">
+    <p>Tecnología portátil</p>
+  </div>
+  <div class="categoria">
+    <img src="image/bs.webp" alt="Bocinas">
+    <p>Bocinas</p>
+  </div>
+  <div class="categoria">
+    <img src="image/df.webp" alt="Audífonos">
+    <p>Audífonos</p>
+  </div>
+
+
+
+  
 </body>
 </html>
