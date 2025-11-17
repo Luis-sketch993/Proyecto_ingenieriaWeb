@@ -73,7 +73,7 @@ $result = $conn->query($sql);
 					<?php endif; ?>
 
 		        	<li class="nav-item">
-		          		<a class="nav-link" href="#"><i class="bi bi-heart"></i> Favoritos</a>
+		          		<a class="nav-link" href="favoritos_lista.php"><i class="bi bi-heart"></i> Favoritos</a>
 						
 		        	</li>
 
@@ -232,8 +232,13 @@ $result = $conn->query($sql);
     <p>Audífonos</p>
   </div>
 
+  <div>
+	<?php
+		include 'footer.php';
+	?>
+
+  </div>
 
 
-  
 </body>
 </html>

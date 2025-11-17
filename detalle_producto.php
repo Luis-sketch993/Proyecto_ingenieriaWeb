@@ -33,6 +33,10 @@ if ($result->num_rows == 0) {
 $producto = $result->fetch_assoc();
 $categoria_id = $producto['categoria_id'];
 
+// Verificar si el producto está en favoritos
+$esFavorito = isset($_SESSION['favoritos']) && in_array($producto['id'], $_SESSION['favoritos']);
+
+
 
 // 2. Consultar productos relacionados (misma categoría, excluyendo el actual)
 $sql_related = "SELECT id, nombre, precio, imagen 
@@ -154,6 +158,22 @@ $conn->close();
                             Realizar compra
                         </a>
                     </div>
+
+
+                    <div class="mt-3">
+                    <?php if ($esFavorito): ?>
+                        <a href="favoritos.php?remove=<?= $producto['id'] ?>" 
+                        class="btn btn-danger w-100">
+                            <i class="bi bi-heart-fill"></i> En favoritos
+                        </a>
+                    <?php else: ?>
+                        <a href="favoritos.php?add=<?= $producto['id'] ?>" 
+                        class="btn btn-outline-danger w-100">
+                            <i class="bi bi-heart"></i> Agregar a Favoritos
+                        </a>
+                    <?php endif; ?>
+                    </div>
+
                 </form>
                 
                 </div>
