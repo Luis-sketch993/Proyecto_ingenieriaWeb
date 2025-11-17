@@ -1,118 +1,117 @@
 <?php
 session_start();
-include 'conexion.php';
+require 'conexion.php'; 
 
-// Si el usuario no está logueado → lo manda al login
-if (!isset($_SESSION['usuario'])) {
-    header("Location: login.php");
+// 1. VALIDACIÓN
+if (!isset($_SESSION['usuario']) || empty($_SESSION['carrito']) || empty($_POST['telefono']) || empty($_POST['direccion']) || empty($_POST['metodo_pago'])) {
+    $_SESSION['error'] = "Faltan datos o el carrito está vacío. (Incluyendo el método de pago)";
+    header("Location: finalizar_compra.php");
     exit();
 }
 
-// Si el carrito está vacío → vuelve al carrito
-if (empty($_SESSION['carrito'])) {
-    header("Location: carrito.php");
+// Suponemos que tienes el ID del usuario en sesión
+$usuario_id = $_SESSION['usuario_id'] ?? 1; // Usar ID de usuario 1 si no está logueado (solo para desarrollo)
+$total_subtotal = 0;
+$costo_envio = 15.00; 
+
+// Datos del formulario y método de pago
+$telefono = $_POST['telefono'];
+$direccion = $_POST['direccion'];
+$metodo_pago = $_POST['metodo_pago']; // Capturamos el método de pago
+
+// 2. INICIO DE TRANSACCIÓN SQL
+$conn->begin_transaction();
+
+try {
+    // Calcular subtotal del pedido
+    foreach ($_SESSION['carrito'] as $item) {
+        $cantidad = (int)$item['cantidad'];
+        $precio = (float)$item['precio'];
+        $total_subtotal += $precio * $cantidad;
+    }
+    
+    $total_final = $total_subtotal + $costo_envio;
+
+    // 3. INSERTAR PEDIDO
+    // El estado inicial es 'Pendiente de Pago' para ambos métodos,
+    // ya que la Tarjeta se pagará en la siguiente página y Yape requiere confirmación.
+    $estado = 'Pendiente de Pago'; 
+    $fecha = date('Y-m-d H:i:s');
+
+    $sql_pedido = "INSERT INTO pedidos (usuario_id, fecha, total, estado, telefono, direccion) VALUES (?, ?, ?, ?, ?, ?)";
+    $stmt_pedido = $conn->prepare($sql_pedido);
+    
+    if (!$stmt_pedido) {
+        throw new Exception("Error en la consulta SQL para 'pedidos': " . $conn->error);
+    }
+    
+    $stmt_pedido->bind_param("isdsss", $usuario_id, $fecha, $total_final, $estado, $telefono, $direccion);
+    
+    if (!$stmt_pedido->execute()) {
+        throw new Exception("Error al ejecutar la creación del pedido principal.");
+    }
+
+    $pedido_id = $conn->insert_id;
+
+    // 4. INSERTAR DETALLE Y ACTUALIZAR STOCK
+    $sql_detalle = "INSERT INTO detalle_pedidos (pedido_id, producto_id, cantidad, precio_unitario) VALUES (?, ?, ?, ?)";
+    // Asumimos que la tabla productos tiene los campos id, stock
+    $sql_stock = "UPDATE productos SET stock = stock - ? WHERE id = ? AND stock >= ?";
+
+    foreach ($_SESSION['carrito'] as $item) {
+        $producto_id = (int)$item['id'];
+        $cantidad = (int)$item['cantidad'];
+        $precio_unitario = (float)$item['precio'];
+
+        // A) Insertar Detalle
+        $stmt_det = $conn->prepare($sql_detalle);
+        if (!$stmt_det) {
+            throw new Exception("Error en la consulta SQL para 'detalle_pedidos'.");
+        }
+        $stmt_det->bind_param("iiid", $pedido_id, $producto_id, $cantidad, $precio_unitario);
+        
+        if (!$stmt_det->execute()) {
+            throw new Exception("Error al insertar detalle de producto " . $producto_id);
+        }
+
+        // B) Actualizar Stock (Reservar stock)
+        $stmt_stock = $conn->prepare($sql_stock);
+        if (!$stmt_stock) {
+            throw new Exception("Error en la consulta SQL para 'productos' (stock).");
+        }
+        $stmt_stock->bind_param("iii", $cantidad, $producto_id, $cantidad);
+        
+        if (!$stmt_stock->execute() || $conn->affected_rows === 0) {
+             throw new Exception("Error al actualizar stock de producto " . $producto_id . " o stock insuficiente.");
+        }
+    }
+
+    // 5. SI LA INSERCIÓN FUE BIEN, CONFIRMAR CAMBIOS (Pedido creado, stock reservado)
+    $conn->commit();
+    
+    // CORRECCIÓN: NO VACIAR EL CARRITO AQUÍ.
+    // El carrito solo se debe vaciar cuando el pago esté 100% confirmado,
+    // lo cual sucede en 'pedido_exito.php'.
+    // unset($_SESSION['carrito']); // <--- ESTA LÍNEA SE HA QUITADO
+
+    // 6. REDIRECCIÓN BASADA EN EL MÉTODO DE PAGO
+    if ($metodo_pago === 'yape') {
+        // Redirige a la página de pago manual con QR de Yape
+        header("Location: pago_yape.php?pedido=" . $pedido_id);
+        exit();
+    } else {
+        // Si es 'pasarela' (tarjeta), redirige al formulario de pago real/simulado.
+        // El estado del pedido sigue siendo 'Pendiente de Pago' hasta que el pago se complete en la siguiente página.
+        header("Location: simular_pago_tarjeta.php?pedido=" . $pedido_id); 
+        exit();
+    }
+
+} catch (Exception $e) {
+    // 7. SI ALGO FALLA, DESHACER TODOS LOS CAMBIOS
+    $conn->rollback();
+    error_log("Error de transacción de pedido: " . $e->getMessage()); 
+    $_SESSION['error'] = "⚠️ Ocurrió un error al procesar tu pedido. Por favor, inténtalo de nuevo. Detalle: " . $e->getMessage();
+    header("Location: finalizar_compra.php"); 
     exit();
 }
-
-$usuario_id = $_SESSION['usuario_id'];
-
-// Calcular total del pedido
-$total = 0;
-foreach ($_SESSION['carrito'] as $item) {
-    $total += $item['precio'] * $item['cantidad'];
-}
-
-// Crear pedido
-$estado = 'Pendiente';
-$fecha = date('Y-m-d H:i:s');
-
-$sql = "INSERT INTO pedidos (usuario_id, fecha, total, estado) VALUES (?, ?, ?, ?)";
-$stmt = $conn->prepare($sql);
-$stmt->bind_param("isds", $usuario_id, $fecha, $total, $estado);
-$stmt->execute();
-
-$pedido_id = $conn->insert_id;
-
-// Insertar detalle del pedido
-foreach ($_SESSION['carrito'] as $item) {
-    $sql_detalle = "INSERT INTO detalle_pedidos (pedido_id, producto_id, cantidad, precio_unitario)
-                    VALUES (?, ?, ?, ?)";
-    $stmt_det = $conn->prepare($sql_detalle);
-    $stmt_det->bind_param("iiid", $pedido_id, $item['id'], $item['cantidad'], $item['precio']);
-    $stmt_det->execute();
-
-    // Actualizar stock
-    $sql_stock = "UPDATE productos SET stock = stock - ? WHERE id = ?";
-    $stmt_stock = $conn->prepare($sql_stock);
-    $stmt_stock->bind_param("ii", $item['cantidad'], $item['id']);
-    $stmt_stock->execute();
-}
-
-// Vaciar carrito
-unset($_SESSION['carrito']);
-
-// Mensaje y redirección
-echo "<script>
-alert('✅ Pedido realizado con éxito. ¡Gracias por tu compra!');
-window.location='index.php';
-</script>";
 ?>
-
-// ✅ Mostrar mensaje de éxito
-?>
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <title>Pedido realizado con éxito</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
-  <style>
-    body {
-      background: #f5f6fa;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-    }
-    .success-box {
-      background: white;
-      padding: 50px;
-      border-radius: 15px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-      text-align: center;
-      animation: fadeIn 0.7s ease-in-out;
-    }
-    .success-box h2 {
-      color: #28a745;
-      font-weight: 700;
-    }
-    .success-box p {
-      color: #555;
-      font-size: 1.1rem;
-    }
-    .success-icon {
-      font-size: 80px;
-      color: #28a745;
-      margin-bottom: 20px;
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-  </style>
-</head>
-<body>
-  <div class="success-box">
-    <div class="success-icon">✅</div>
-    <h2>¡Pedido realizado con éxito!</h2>
-    <p>Gracias por tu compra, <strong><?= htmlspecialchars($nombre) ?></strong>.</p>
-    <p>Tu pedido ha sido registrado y se encuentra en estado <strong>Pendiente</strong>.</p>
-    <p>Recibirás una notificación cuando se procese tu pedido.</p>
-    <hr>
-    <div class="mt-3">
-      <a href="mis_pedidos.php" class="btn btn-success me-2">Ver mis pedidos</a>
-      <a href="index.php" class="btn btn-outline-dark">Volver a la tienda</a>
-    </div>
-  </div>
-</body>
-</html>
