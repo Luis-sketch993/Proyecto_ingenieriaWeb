@@ -45,8 +45,6 @@ $stmt_related->bind_param("ii", $categoria_id, $id);
 $stmt_related->execute();
 $result_related = $stmt_related->get_result();
 
-// Nota: La conexión se cierra al final del script si se usa 'footer.php',
-// pero aquí la cerramos manualmente ya que estamos fuera de la modularización.
 $conn->close(); 
 ?>
 
@@ -77,47 +75,13 @@ $conn->close();
         
         <div class="product-card row">
             
-            <div class="col-lg-5 text-center product-image">
+            <div class="col-lg-6 text-center product-image">
                 <img src="<?= htmlspecialchars($producto['imagen']) ?>"
-                    class="img-fluid" 
-                    alt="<?= htmlspecialchars($producto['nombre']) ?>">
-            </div>
+                     class="img-fluid" 
+                     alt="<?= htmlspecialchars($producto['nombre']) ?>">
 
-            <div class="col-lg-5 product-info ms-lg-auto">
-                <p class="text-uppercase text-secondary mb-1">PRODUCTOS / <?= htmlspecialchars($producto['categoria']) ?></p>
-                <h1 class="product-title fw-bold fs-2"><?= htmlspecialchars($producto['nombre']) ?></h1>
-                <p class="product-category text-muted">SKU: 00<?= htmlspecialchars($producto['id']) ?></p>
-
-                <div class="product-price h2 fw-bold">S/. <?= number_format($producto['precio'], 2) ?></div>
-                <p class="product-stock text-success fw-bold mb-4">
-                    <?php if ($producto['stock'] > 0): ?>
-                        En stock: <?= htmlspecialchars($producto['stock']) ?> unidades
-                    <?php else: ?>
-                        Producto agotado
-                    <?php endif; ?>
-                </p>
-
-                <form method="POST" action="carrito.php?agregar=<?= $producto['id'] ?>">
-                    <label for="cantidad" class="form-label fw-bold">Cantidad *</label>
-                    
-                    <div class="quantity-selector mb-4">
-                        <button type="button" onclick="document.querySelector('#qty').stepDown()">-</button>
-                        <input type="number" name="cantidad" id="qty" value="1" min="1" max="<?= htmlspecialchars($producto['stock']) ?>" required class="form-control">
-                        <button type="button" onclick="document.querySelector('#qty').stepUp()">+</button>
-                    </div>
-
-                    <div class="product-buttons d-grid gap-2">
-                        <button type="submit" class="btn btn-lg btn-add-to-cart">
-                            Agregar al carrito
-                        </button>
-                        <a href="finalizar_compra.php" class="btn btn-lg btn-buy-now">
-                            Realizar compra
-                        </a>
-                    </div>
-                </form>
-                
                 <div class="accordion mt-5" id="productAccordion">
-                    
+            
                     <div class="accordion-item">
                         <h2 class="accordion-header" id="headingOne">
                             <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
@@ -158,10 +122,43 @@ $conn->close();
                     </div>
                 </div>
             </div>
+
+            <div class="col-lg-6 product-info">
+                <p class="text-uppercase text-secondary mb-1">PRODUCTOS / <?= htmlspecialchars($producto['categoria']) ?></p>
+                <h1 class="product-title fw-bold fs-2"><?= htmlspecialchars($producto['nombre']) ?></h1>
+                <p class="product-category text-muted">SKU: 00<?= htmlspecialchars($producto['id']) ?></p>
+
+                <div class="product-price h2 fw-bold">S/. <?= number_format($producto['precio'], 2) ?></div>
+                <p class="product-stock text-success fw-bold mb-4">
+                    <?php if ($producto['stock'] > 0): ?>
+                        En stock: <?= htmlspecialchars($producto['stock']) ?> unidades
+                    <?php else: ?>
+                        Producto agotado
+                    <?php endif; ?>
+                </p>
+
+                <form method="POST" action="carrito.php?agregar=<?= $producto['id'] ?>">
+                    <label for="cantidad" class="form-label fw-bold">Cantidad *</label>
+                    
+                    <div class="quantity-selector mb-4">
+                        <button type="button" onclick="document.querySelector('#qty').stepDown()">-</button>
+                        <input type="number" name="cantidad" id="qty" value="1" min="1" max="<?= htmlspecialchars($producto['stock']) ?>" required class="form-control">
+                        <button type="button" onclick="document.querySelector('#qty').stepUp()">+</button>
+                    </div>
+
+                    <div class="product-buttons d-grid gap-2">
+                        <button type="submit" class="btn btn-lg btn-add-to-cart">
+                            Agregar al carrito
+                        </button>
+                        <a href="finalizar_compra.php" class="btn btn-lg btn-buy-now">
+                            Realizar compra
+                        </a>
+                    </div>
+                </form>
+                
+                </div>
         </div>
-    </div>
-    
-    <?php if ($result_related->num_rows > 0): ?>
+    </div> <?php if ($result_related->num_rows > 0): ?>
     <section class="related-products-section">
         <div class="container">
             <h2>Productos relacionados</h2>
@@ -185,7 +182,6 @@ $conn->close();
         </div>
     </section>
     <?php endif; ?>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
