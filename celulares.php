@@ -6,7 +6,7 @@
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
 	<link rel="stylesheet" type="text/css" href="styles.css">
-	<title>Audio - Second Use</title>
+	<title>Celulares - Second Use</title>
 </head>
 <body>
 		<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -44,16 +44,16 @@
           <a href="index.php" class="text-decoration-none text-dark">Second Use</a>
           <img src="image/logo2.jpeg" alt="Logo" style="height: 70px;">
       </h1>
-
-      <ul class="navbar-nav ms-auto align-items-center">
+      <ul class="navbar-nav ms-auto">
         <li class="navbar-brand">
-         
+          
         </li>
         <li class="navbar-item">
-          <a class="nav-link" href="#"><i class="bi bi-heart"></i> Favoritos</a>
+          <a class="nav-link" href="favoritos_lista.php"><i class="bi bi-heart"></i> Favoritos</a>
+
 
           	<li class="nav-item">
-		          		<a class="nav-link" href="#"><i class="bi bi-cart"></i> Carrito</a>
+		          		<a class="nav-link" href="carrito.php"><i class="bi bi-cart"></i> Carrito</a>
 						
 		        </li>
         </li>
@@ -72,14 +72,15 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
 
-                <li class="nav-item"><a class="nav-link" href="productos.html">Productos</a></li>
-                <li class="nav-item"><a class="nav-link" href="computadoras.html">Computadoras</a></li>
-                <li class="nav-item"><a class="nav-link" href="tabletas.html">Tabletas</a></li>
-                <li class="nav-item"><a class="nav-link" href="drones.html">Drones y cámaras</a></li>
-                <li class="nav-item"><a class="nav-link" href="audio.html">Audio</a></li>
-                <li class="nav-item"><a class="nav-link" href="celulares.html">Celulares</a></li>
-                <li class="nav-item"><a class="nav-link" href="tv.html">T.V. y cine en casa</a></li>
-                <li class="nav-item"><a class="nav-link" href="tecnologia.html">Tecnología portátil</a></li>
+                <li class="nav-item"><a class="nav-link" href="productos.php">Productos</a></li>
+                <li class="nav-item"><a class="nav-link" href="computadoras.php">Computadoras</a></li>
+                <li class="nav-item"><a class="nav-link" href="tabletas.php">Tabletas</a></li>
+                <li class="nav-item"><a class="nav-link" href="drones.php">Drones y cámaras</a></li>
+                <li class="nav-item"><a class="nav-link" href="audio.php">Audio</a></li>
+                <li class="nav-item"><a class="nav-link" href="celulares.php">Celulares</a></li>
+                <li class="nav-item"><a class="nav-link" href="tv.php">T.V. y cine en casa</a></li>
+                <li class="nav-item"><a class="nav-link" href="tecnologia.php">Tecnología portátil</a></li>
+                
             </ul>
         </div>
   </div>
@@ -87,14 +88,14 @@
 
   <!-- Contenido -->
   <div class="container mt-4">
-  <h1 class="text-center mb-4">Audio</h1>
+  <h1 class="text-center mb-4">Celulares</h1>
   <div class="row g-4">
     <!-- Producto -->
     <div class="col-12 col-sm-6 col-md-4 col-lg-3">
       <div class="card h-100">
-        <img src="image/audio1.avif" class="card-img-top" alt="Audio 1">
+        <img src="image/cel1.avif" class="card-img-top" alt="Audio 1">
         <div class="card-body">
-          <p class="card-text">Audífonos Balo inalámbricos con cancelación de ruido</p>
+          <p class="card-text">Pantony X21 5G, 128GB con lápiz Z</p>
           <a href="#" class="btn btn-primary w-100">Comprar</a>
         </div>
       </div>
@@ -103,20 +104,9 @@
     <!-- Producto -->
     <div class="col-12 col-sm-6 col-md-4 col-lg-3">
       <div class="card h-100">
-        <img src="image/audio2.avif" class="card-img-top" alt="Audio 2">
+        <img src="image/cel2.avif" class="card-img-top" alt="Audio 2">
         <div class="card-body">
-          <p class="card-text">Audífonos inalámbricos Space Buds True Earbud</p>
-          <a href="#" class="btn btn-primary w-100">Comprar</a>
-        </div>
-      </div>
-    </div>
-
-    <!-- to -->
-    <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-      <div class="card h-100">
-        <img src="image/audio3.avif" class="card-img-top" alt="Audio 3">
-        <div class="card-body">
-          <p class="card-text">Drums Pro audífonos inalámbricos sobre el oído</p>
+          <p class="card-text">JP Exmax Phantom, 5G, 16GB</p>
           <a href="#" class="btn btn-primary w-100">Comprar</a>
         </div>
       </div>
@@ -125,29 +115,9 @@
     <!-- Producto -->
     <div class="col-12 col-sm-6 col-md-4 col-lg-3">
       <div class="card h-100">
-        <img src="image/audio4.avif" class="card-img-top" alt="Audio 4">
+        <img src="image/cel3.avif" class="card-img-top" alt="Audio 3">
         <div class="card-body">
-          <p class="card-text">Audífonos inalámbricos con cancelación del ruido</p>
-          <a href="#" class="btn btn-primary w-100">Comprar</a>
-        </div>
-      </div>
-    </div>
-
-    <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-      <div class="card h-100">
-        <img src="image/audio5.avif" class="card-img-top" alt="Audio 4">
-        <div class="card-body">
-          <p class="card-text">Audífonos inalámbricos Pantony de botón certificados</p>
-          <a href="#" class="btn btn-primary w-100">Comprar</a>
-        </div>
-      </div>
-    </div>
-
-    <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-      <div class="card h-100">
-        <img src="image/audio6.avif" class="card-img-top" alt="Audio 4">
-        <div class="card-body">
-          <p class="card-text">Audífonos inalámbricos blancos de botón</p>
+          <p class="card-text">iPhone 13 128GB, 4GB RAM, cámara principal 12MP + 12MP, cámarP, 4K, vuelo 39 min</p>
           <a href="#" class="btn btn-primary w-100">Comprar</a>
         </div>
       </div>
@@ -156,19 +126,53 @@
     <!-- Producto -->
     <div class="col-12 col-sm-6 col-md-4 col-lg-3">
       <div class="card h-100">
-        <img src="image/audio7.avif" class="card-img-top" alt="Audio 5">
+        <img src="image/cel4.avif" class="card-img-top" alt="Audio 4">
         <div class="card-body">
-          <p class="card-text">Audífonos para videojuegos con sonido envolvente 10.2</p>
+          <p class="card-text">OVE Light Space 5G, 128GB</p>
           <a href="#" class="btn btn-primary w-100">Comprar</a>
         </div>
       </div>
     </div>
 
+    <!-- Producto -->
     <div class="col-12 col-sm-6 col-md-4 col-lg-3">
       <div class="card h-100">
-        <img src="image/audio8.avif" class="card-img-top" alt="Audio 5">
+        <img src="image/cel5.avif" class="card-img-top" alt="Audio 5">
         <div class="card-body">
-          <p class="card-text">Audífonos con cable MX5</p>
+          <p class="card-text">Pantony Super 10W 5G, 128GB</p>
+          <a href="#" class="btn btn-primary w-100">Comprar</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Producto -->
+    <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+      <div class="card h-100">
+        <img src="image/cel6.avif" class="card-img-top" alt="Audio 5">
+        <div class="card-body">
+          <p class="card-text">JP Espectro S, 5G, 16GB</p>
+          <a href="#" class="btn btn-primary w-100">Comprar</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Producto -->
+    <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+      <div class="card h-100">
+        <img src="image/cel7.avif" class="card-img-top" alt="Audio 5">
+        <div class="card-body">
+          <p class="card-text">Protector Go XPD 5G, 16GB</p>
+          <a href="#" class="btn btn-primary w-100">Comprar</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Producto -->
+    <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+      <div class="card h-100">
+        <img src="image/cel8.avif" class="card-img-top" alt="Audio 5">
+        <div class="card-body">
+          <p class="card-text">MAX Pantony S 5G, 128GB</p>
           <a href="#" class="btn btn-primary w-100">Comprar</a>
         </div>
       </div>
@@ -177,11 +181,9 @@
 </div>
 
 
-  <!-- Footer -->
-  <footer class="bg-dark text-white text-center p-3 mt-5">
-    <p>&copy; 2025 Second Use - Todos los derechos reservados</p>
-  </footer>
-
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+
+  <?php include 'footer.php'; ?>
+
 </body>
 </html>

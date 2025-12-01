@@ -47,10 +47,10 @@
 
         <ul class="navbar-nav ms-auto align-items-center">
         
-        <li class="navbar-item"><a class="nav-link" href="#"><i class="bi bi-heart"></i> Favoritos</a></li>
+        <li class="navbar-item"><a class="nav-link" href="favoritos_lista.php"><i class="bi bi-heart"></i> Favoritos</a></li>
 
         	<li class="navbar-item">
-		          		<a class="nav-link" href="#"><i class="bi bi-cart"></i> Carrito</a>
+		          		<a class="nav-link" href="carrito.php"><i class="bi bi-cart"></i> Carrito</a>
 						
 		      </li>
       </ul>
@@ -93,14 +93,14 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
 
-                <li class="nav-item"><a class="nav-link" href="productos.html">Productos</a></li>
-                <li class="nav-item"><a class="nav-link" href="computadoras.html">Computadoras</a></li>
-                <li class="nav-item"><a class="nav-link" href="tabletas.html">Tabletas</a></li>
-                <li class="nav-item"><a class="nav-link" href="drones.html">Drones y cámaras</a></li>
-                <li class="nav-item"><a class="nav-link" href="audio.html">Audio</a></li>
-                <li class="nav-item"><a class="nav-link" href="celulares.html">Celulares</a></li>
-                <li class="nav-item"><a class="nav-link" href="tv.html">T.V. y cine en casa</a></li>
-                <li class="nav-item"><a class="nav-link" href="tecnologia.html">Tecnología portátil</a></li>
+                <li class="nav-item"><a class="nav-link" href="productos.php">Productos</a></li>
+                <li class="nav-item"><a class="nav-link" href="computadoras.php">Computadoras</a></li>
+                <li class="nav-item"><a class="nav-link" href="tabletas.php">Tabletas</a></li>
+                <li class="nav-item"><a class="nav-link" href="drones.php">Drones y cámaras</a></li>
+                <li class="nav-item"><a class="nav-link" href="audio.php">Audio</a></li>
+                <li class="nav-item"><a class="nav-link" href="celulares.php">Celulares</a></li>
+                <li class="nav-item"><a class="nav-link" href="tv.php">T.V. y cine en casa</a></li>
+                <li class="nav-item"><a class="nav-link" href="tecnologia.php">Tecnología portátil</a></li>
                
             </ul>
         </div>
@@ -202,11 +202,10 @@
 </div>
 
 
-  <!-- Footer -->
-  <footer class="bg-dark text-white text-center p-3 mt-5">
-    <p>&copy; 2025 Second Use - Todos los derechos reservados</p>
-  </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+
+  <?php include 'footer.php'; ?>
+  
 </body>
 </html>

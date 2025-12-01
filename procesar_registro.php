@@ -24,8 +24,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $stmt->bind_param("sss", $nombre, $email, $password);
 
     if ($stmt->execute()) {
-        $_SESSION['success'] = "Registro exitoso. Ahora puedes iniciar sesión.";
-        header("Location: login.php");
+        // Obtener el ID del usuario recién creado
+        $usuario_id = $stmt->insert_id;
+        
+        // Iniciar sesión automáticamente
+        $_SESSION['usuario_id'] = $usuario_id;
+        $_SESSION['usuario'] = $nombre;
+        $_SESSION['email'] = $email;
+        $_SESSION['rol'] = 'cliente';
+        
+        header("Location: index.php");
+        exit();
     } else {
         $_SESSION['error'] = "Error al registrar usuario: " . $conn->error;
         header("Location: register.php");

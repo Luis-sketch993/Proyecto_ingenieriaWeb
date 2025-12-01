@@ -79,8 +79,10 @@ $result = $conn->query($sql);
 
 					<li class="nav-item">
 		          		<a class="nav-link d-inline-flex align-items-center position-relative" href="carrito.php">
-							<i class="bi bi-cart"></i> carrito</a>
-							<span class="ms-1">Carrito</span>
+							<!-- <i class="bi bi-cart"></i> carrito</a> -->
+						
+							
+							<span class="ms-1 bi bi-cart">Carrito</span>
 						
 					<?php
 					$contador = 0;
@@ -113,15 +115,15 @@ $result = $conn->query($sql);
 	    </button>
 	    <div class="collapse navbar-collapse" id="navbarNav">
 	      <ul class="navbar-nav">
-	        <li class="nav-item"><a class="nav-link" href="productos.html">Productos</a></li>
-	        <li class="nav-item"><a class="nav-link" href="computadoras.html">Computadoras</a></li>
-	        <li class="nav-item"><a class="nav-link" href="tabletas.html">Tabletas</a></li>
-	        <li class="nav-item"><a class="nav-link" href="drones.html">Drones y cámaras</a></li>
-	        <li class="nav-item"><a class="nav-link" href="audio.html">Audio</a></li>
-	        <li class="nav-item"><a class="nav-link" href="celulares.html">Celulares</a></li>
-	        <li class="nav-item"><a class="nav-link" href="tv.html">T.V. y cine en casa</a></li>
-	        <li class="nav-item"><a class="nav-link" href="tecnologia.html">Tecnología portátil</a></li>
-	        <li class="nav-item"><a class="nav-link" href="oferta.html">Oferta</a></li>
+	        <li class="nav-item"><a class="nav-link" href="productos.php">Productos</a></li>
+	        <li class="nav-item"><a class="nav-link" href="computadoras.php">Computadoras</a></li>
+	        <li class="nav-item"><a class="nav-link" href="tabletas.php">Tabletas</a></li>
+	        <li class="nav-item"><a class="nav-link" href="drones.php">Drones y cámaras</a></li>
+	        <li class="nav-item"><a class="nav-link" href="audio.php">Audio</a></li>
+	        <li class="nav-item"><a class="nav-link" href="celulares.php">Celulares</a></li>
+	        <li class="nav-item"><a class="nav-link" href="tv.php">T.V. y cine en casa</a></li>
+	        <li class="nav-item"><a class="nav-link" href="tecnologia.php">Tecnología portátil</a></li>
+	        <li class="nav-item"><a class="nav-link" href="oferta.php">Oferta</a></li>
 	      </ul>
 	    </div>
 	  </div>
@@ -231,14 +233,13 @@ $result = $conn->query($sql);
     <img src="image/df.webp" alt="Audífonos">
     <p>Audífonos</p>
   </div>
+</div>
 
-  <div>
-	<?php
-		include 'footer.php';
-	?>
-
-  </div>
-
+  <?php include 'footer.php'; ?>
 
 </body>
+
+
+
 </html>
+  

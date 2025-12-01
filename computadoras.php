@@ -39,10 +39,10 @@
 
       <ul class="navbar-nav ms-auto align-items-center">
         
-        <li class="nav-item"><a class="nav-link" href="#"><i class="bi bi-heart"></i> Favoritos</a></li>
+        <li class="nav-item"><a class="nav-link" href="favoritos_lista.php"><i class="bi bi-heart"></i> Favoritos</a></li>
 
         <li class="nav-item">
-		          		<a class="nav-link" href="#"><i class="bi bi-cart"></i> Carrito</a>
+		          		<a class="nav-link" href="carrito.php"><i class="bi bi-cart"></i> Carrito</a>
 		    </li>
     
       </ul>
@@ -59,14 +59,14 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarBottom">
       <ul class="navbar-nav">
-        <li class="nav-item"><a class="nav-link" href="productos.html">Productos</a></li>
-        <li class="nav-item"><a class="nav-link active" href="computadoras.html">Computadoras</a></li>
-        <li class="nav-item"><a class="nav-link" href="tabletas.html">Tabletas</a></li>
-        <li class="nav-item"><a class="nav-link" href="drones.html">Drones y cámaras</a></li>
-        <li class="nav-item"><a class="nav-link" href="audio.html">Audio</a></li>
-        <li class="nav-item"><a class="nav-link" href="celulares.html">Celulares</a></li>
-        <li class="nav-item"><a class="nav-link" href="tv.html">T.V. y cine en casa</a></li>
-        <li class="nav-item"><a class="nav-link" href="tecnologia.html">Tecnología portátil</a></li>
+        <li class="nav-item"><a class="nav-link" href="productos.php">Productos</a></li>
+        <li class="nav-item"><a class="nav-link active" href="computadoras.php">Computadoras</a></li>
+        <li class="nav-item"><a class="nav-link" href="tabletas.php">Tabletas</a></li>
+        <li class="nav-item"><a class="nav-link" href="drones.php">Drones y cámaras</a></li>
+        <li class="nav-item"><a class="nav-link" href="audio.php">Audio</a></li>
+        <li class="nav-item"><a class="nav-link" href="celulares.php">Celulares</a></li>
+        <li class="nav-item"><a class="nav-link" href="tv.php">T.V. y cine en casa</a></li>
+        <li class="nav-item"><a class="nav-link" href="tecnologia.php">Tecnología portátil</a></li>
         
       </ul>
     </div>
@@ -85,7 +85,7 @@
         <div class="card-body">
           <h5 class="card-title">Laptop Dell Inspiron 15</h5>
           <p class="card-text">Procesador Intel Core i7, 16GB RAM, 512GB SSD.</p>
-          <a href="#" class="btn btn-primary w-100">Comprar</a>
+          <a href="detalle_producto.php?id=301" class="btn btn-primary w-100">Comprar</a>
         </div>
       </div>
     </div>
@@ -97,7 +97,7 @@
         <div class="card-body">
           <h5 class="card-title">MacBook Air M3 (2025)</h5>
           <p class="card-text">Pantalla Retina 13", chip Apple M3, diseño ultraligero.</p>
-          <a href="#" class="btn btn-primary w-100">Comprar</a>
+          <a href="detalle_producto.php?id=302" class="btn btn-primary w-100">Comprar</a>
         </div>
       </div>
     </div>
@@ -109,7 +109,7 @@
         <div class="card-body">
           <h5 class="card-title">Asus ROG Strix G17</h5>
           <p class="card-text">Laptop gamer con Ryzen 9 y RTX 4070.</p>
-          <a href="#" class="btn btn-primary w-100">Comprar</a>
+          <a href="detalle_producto.php?id=303" class="btn btn-primary w-100">Comprar</a>
         </div>
       </div>
     </div>
@@ -121,7 +121,7 @@
         <div class="card-body">
           <h5 class="card-title">HP Pavilion 14</h5>
           <p class="card-text">Ideal para oficina y estudio. Intel i5, SSD de 256GB.</p>
-          <a href="#" class="btn btn-primary w-100">Comprar</a>
+          <a href="detalle_producto.php?id=23" class="btn btn-primary w-100">Comprar</a>
         </div>
       </div>
     </div>
@@ -129,13 +129,13 @@
   </div>
 </div>
 
-<!-- 🔹 Footer -->
-<footer class="bg-dark text-white text-center py-3 mt-5">
-  <p class="mb-0">&copy; 2025 Second Use. Todos los derechos reservados.</p>
-</footer>
 
 <!-- 🔹 Scripts -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+
+
+
+<?php include 'footer.php'; ?>
 
 </body>
 </html>

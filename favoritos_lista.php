@@ -2,6 +2,7 @@
 session_start();
 require 'conexion.php';
 
+
 // Si no hay favoritos
 if (!isset($_SESSION['favoritos']) || empty($_SESSION['favoritos'])) {
     $productos = [];
@@ -13,6 +14,9 @@ if (!isset($_SESSION['favoritos']) || empty($_SESSION['favoritos'])) {
 }
 
 ?>
+
+<?php include 'header.php'; ?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -23,19 +27,14 @@ if (!isset($_SESSION['favoritos']) || empty($_SESSION['favoritos'])) {
 </head>
 <body class="bg-light">
 
-<nav class="navbar navbar-dark bg-dark shadow-sm mb-4">
-    <div class="container-fluid">
-        <a href="index.php" class="navbar-brand">← Volver al inicio</a>
-        <span class="navbar-text text-white">Mis Favoritos</span>
-    </div>
-</nav>
+
 
 <div class="container py-4">
 
-    <h2 class="mb-4">Productos favoritos</h2>
+    <h2 class="mb-4 text-center">Productos favoritos</h2>
 
     <?php if (empty($productos)): ?>
-        <p class="text-muted">No tienes productos en favoritos.</p>
+        <p class="text-muted text-center">No tienes productos en favoritos.</p>
     <?php else: ?>
         <div class="row g-4">
             <?php while($p = $productos->fetch_assoc()): ?>

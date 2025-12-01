@@ -56,6 +56,8 @@ if (isset($_GET['accion']) && isset($_GET['id'])) {
 }
 ?>
 
+<?php include 'header.php'; ?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -67,12 +69,7 @@ if (isset($_GET['accion']) && isset($_GET['id'])) {
 <body class="bg-light">
 
   <!-- Barra superior -->
-  <nav class="navbar navbar-dark bg-dark shadow-sm">
-    <div class="container-fluid">
-      <a href="index.php" class="navbar-brand">← Seguir comprando</a>
-      <span class="navbar-text me-3 text-white">🛒 Carrito de Compras</span>
-    </div>
-  </nav>
+
 
   <div class="container py-5">
     <h2 class="mb-4 text-center">Tu Carrito</h2>

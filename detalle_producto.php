@@ -33,6 +33,9 @@ if ($result->num_rows == 0) {
 $producto = $result->fetch_assoc();
 $categoria_id = $producto['categoria_id'];
 
+// Establecer título de página dinámico
+$page_title = htmlspecialchars($producto['nombre']) . ' | Second Use';
+
 // Verificar si el producto está en favoritos
 $esFavorito = isset($_SESSION['favoritos']) && in_array($producto['id'], $_SESSION['favoritos']);
 
@@ -50,27 +53,13 @@ $stmt_related->execute();
 $result_related = $stmt_related->get_result();
 
 $conn->close(); 
+
+
 ?>
 
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title><?= htmlspecialchars($producto['nombre']) ?> | Second Use</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body class="bg-light">
+<?php include 'header.php'; ?>
 
-    <nav class="navbar navbar-dark bg-dark shadow-sm">
-        <div class="container-fluid">
-            <a href="index.php" class="navbar-brand">← Volver al inicio</a>
-            <span class="navbar-text me-3 text-white">Second Use</span>
-        </div>
-    </nav>
-    <div class="container py-5">
+<div class="container py-5">
         
         <div class="d-flex justify-content-between align-items-center mb-4 text-secondary">
             <span>Inicio / Productos / <?= htmlspecialchars($producto['categoria']) ?> / <?= htmlspecialchars($producto['nombre']) ?></span>
@@ -203,5 +192,5 @@ $conn->close();
     </section>
     <?php endif; ?>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+
+    <?php include 'footer.php'; ?>

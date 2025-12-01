@@ -1,0 +1,8 @@
+<?php
+session_start();
+
+if (!isset($_SESSION['admin'])) {
+    header("Location: login.php?error=Debes iniciar sesión");
+    exit();
+}
+?>

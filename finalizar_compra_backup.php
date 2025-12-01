@@ -40,8 +40,8 @@ include 'header.php';
         <div class="col-lg-7 order-md-1">
             <div class="checkout-card">
                 <h3 class="mb-4">Información de Envío</h3>
-                
-                <form id="checkout-form-main" method="POST" onsubmit="return false;">
+                <!-- El formulario apunta a procesar_pedido.php -->
+                <form action="procesar_pedido.php" method="POST">
                     
                     <div class="mb-3">
                         <label for="nombre" class="form-label">Nombre completo</label>
@@ -88,11 +88,19 @@ include 'header.php';
                         <i class="bi bi-info-circle-fill"></i> 
                         <span id="payment-message">Se te redirigirá a la pasarela de pago segura para completar tu compra.</span>
                     </div>
+                    <!-- FIN SECCIÓN DE PAGO -->
 
                     <!-- Botón que redirige directamente según el método -->
                     <button type="button" class="btn btn-finalize btn-lg w-100 mt-4" id="btn-pagar" onclick="redirectToPayment()">
                         <i class="bi bi-lock-fill"></i> Pagar y Confirmar S/. <?= number_format($total_final, 2) ?>
                     </button>
+
+                    <!-- Formulario oculto para procesar pedido -->
+                    <form id="checkout-form" action="procesar_pedido.php" method="POST" style="display: none;">
+                        <input type="hidden" name="telefono" id="hidden_telefono" value="">
+                        <input type="hidden" name="direccion" id="hidden_direccion" value="">
+                        <input type="hidden" name="metodo_pago" id="hidden_metodo_pago" value="">
+                    </form>
                     
                 </form>
             </div>
@@ -132,6 +140,8 @@ include 'header.php';
         </div>
     </div>
 </div>
+
+<?php include 'footer.php'; // Incluimos el footer modularizado ?>
 
 <style>
 .payment-option {
@@ -198,11 +208,6 @@ include 'header.php';
     box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
     color: white;
 }
-
-.btn-finalize:disabled {
-    opacity: 0.7;
-    cursor: not-allowed;
-}
 </style>
 
 <script>
@@ -220,11 +225,13 @@ function updatePaymentUI() {
     }
 }
 
+// Función para redirigir directamente a la pasarela de pago
 function redirectToPayment() {
     const telefono = document.getElementById('telefono').value.trim();
     const direccion = document.getElementById('direccion').value.trim();
     const metodoPago = document.querySelector('input[name="metodo_pago"]:checked').value;
     
+    // Validar que los campos estén completos
     if (!telefono) {
         alert('⚠️ Por favor, ingresa tu número de teléfono.');
         document.getElementById('telefono').focus();
@@ -237,11 +244,13 @@ function redirectToPayment() {
         return;
     }
     
+    // Mostrar loading
     const btnPagar = document.getElementById('btn-pagar');
     const btnText = btnPagar.innerHTML;
     btnPagar.innerHTML = '<i class="bi bi-hourglass-split"></i> Procesando...';
     btnPagar.disabled = true;
     
+    // Enviar datos a procesar_pedido.php
     const formData = new FormData();
     formData.append('telefono', telefono);
     formData.append('direccion', direccion);
@@ -251,8 +260,13 @@ function redirectToPayment() {
         method: 'POST',
         body: formData
     })
-    .then(response => response.text())
+    .then(response => {
+        if (!response.ok) throw new Error('Error en la solicitud');
+        return response.text();
+    })
     .then(data => {
+        // Si todo está bien, procesar_pedido.php redirigirá automáticamente
+        // Si no, mostrará un error
         if (data.includes('error') || data.includes('Error')) {
             alert('❌ Error: ' + data);
             btnPagar.innerHTML = btnText;
@@ -267,9 +281,8 @@ function redirectToPayment() {
     });
 }
 
+// Inicializar UI al cargar
 document.addEventListener('DOMContentLoaded', function() {
     updatePaymentUI();
 });
 </script>
-
-<?php include 'footer.php'; ?>

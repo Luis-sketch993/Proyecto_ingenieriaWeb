@@ -53,79 +53,150 @@ $icono_clase = ($metodo === 'tarjeta') ? 'bi-check-circle-fill' : 'bi-patch-chec
 -->
 <style>
 body {
-    background-color: #f4f7ff; /* Un fondo suave */
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     font-family: "Poppins", sans-serif;
+    min-height: 100vh;
 }
+
 .success-container {
     display: flex;
     align-items: center;
     justify-content: center;
-    min-height: calc(100vh - 120px); /* Ajusta si tu header es diferente */
-    padding: 2rem;
+    min-height: calc(100vh - 120px);
+    padding: 2rem 1rem;
 }
+
 .success-card {
     background: #fff;
-    border-radius: 20px; /* Bordes más redondeados */
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-    border: 1px solid #e9ecef;
-    border-top: 5px solid #198754; /* Borde superior verde */
-    padding: 2.5rem; /* Más espacio interno */
+    border-radius: 20px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+    border-top: 6px solid #28a745;
+    padding: 3rem 2rem;
     width: 100%;
-    max-width: 800px; /* Ancho máximo para la tarjeta */
+    max-width: 600px;
     text-align: center;
+    animation: slideIn 0.5s ease-out;
 }
-.success-card .display-1 {
-    font-size: 5rem; /* Icono grande */
-}
-.success-card h1 {
-    font-weight: 700; /* Título más grueso */
-    color: #198754; /* Color verde */
-}
-.success-card .fs-5 {
-    font-size: 1.15rem; /* Texto de párrafo más legible */
-    color: #555;
-}
-.small-info-box {
-    background-color: #f8f9fa; /* Fondo ligero para los detalles */
-    border-radius: 10px;
-    padding: 1.5rem;
-    text-align: left; /* Alineado a la izquierda dentro de la caja */
-}
-.small-info-box p {
-    margin-bottom: 0.5rem;
-}
-.small-info-box .fw-bold {
-    color: #333;
-}
-/* Estilos para forzar el layout de Bootstrap en caso de que falle */
-.container {
-    width: 100%;
-    padding-right: 15px;
-    padding-left: 15px;
-    margin-right: auto;
-    margin-left: auto;
-}
-.row {
-    display: flex;
-    flex-wrap: wrap;
-    margin-right: -15px;
-    margin-left: -15px;
-}
-.justify-content-center {
-    justify-content: center !important;
-}
-/* Definimos col-lg-8 para que funcione */
-@media (min-width: 992px) {
-    .col-lg-8 {
-        flex: 0 0 66.666667%;
-        max-width: 66.666667%;
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
 }
-.btn-primary {
+
+.success-icon {
+    font-size: 4rem;
+    color: #28a745;
+    margin-bottom: 1rem;
+}
+
+.success-card h1 {
+    font-weight: 800;
+    color: #28a745;
+    margin-bottom: 1rem;
+    font-size: 2rem;
+}
+
+.success-card p {
+    color: #555;
+    font-size: 1.05rem;
+    line-height: 1.6;
+}
+
+.order-details {
+    background: #f8f9fa;
+    border-radius: 15px;
+    padding: 2rem;
+    margin: 2rem 0;
+    border-left: 4px solid #28a745;
+}
+
+.detail-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.detail-row:last-child {
+    margin-bottom: 0;
+}
+
+.detail-item {
+    text-align: left;
+}
+
+.detail-label {
+    font-size: 0.85rem;
+    color: #999;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 0.3rem;
     font-weight: 600;
+}
+
+.detail-value {
     font-size: 1.1rem;
-    padding: 0.8rem 1.5rem;
+    color: #333;
+    font-weight: 600;
+}
+
+.detail-value.highlight {
+    color: #28a745;
+    font-size: 1.3rem;
+}
+
+.alert {
     border-radius: 10px;
+    font-size: 0.95rem;
+    border: none;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+    margin: 1.5rem 0;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border: none;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 1.05rem;
+    padding: 1rem 2rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+    color: white;
+}
+
+.success-message {
+    background: linear-gradient(135deg, #e8f5f3 0%, #f0fffe 100%);
+    color: #28a745;
+    padding: 1rem;
+    border-radius: 10px;
+    margin-top: 1.5rem;
+    font-weight: 600;
+}
+
+@media (max-width: 576px) {
+    .success-card {
+        padding: 2rem 1.5rem;
+    }
+    
+    .success-card h1 {
+        font-size: 1.6rem;
+    }
+    
+    .detail-row {
+        grid-template-columns: 1fr;
+    }
 }
 </style>
 
@@ -133,47 +204,60 @@ body {
 <div class="container py-5 success-container">
     <div class="row justify-content-center">
         <div class="col-lg-8">
-            <!-- 
-                HTML MEJORADO: 
-                - Se usa 'rounded-4' (Bootstrap 5) en lugar de 'rounded-xl'
-                - Se usa <strong> para la negrita
-            -->
-            <div class="card text-center shadow-lg p-md-5 p-4 border-success border-3 rounded-4 success-card">
+            <div class="success-card">
                 
-                <i class="bi <?= $icono_clase ?> text-success display-1 mb-4"></i>
-                <h1 class="fw-bolder mb-3 text-success"><?= $titulo_pago ?></h1>
+                <div class="success-icon">
+                    <i class="bi <?= $icono_clase ?>"></i>
+                </div>
                 
-                <p class="fs-5 mb-4">
+                <h1><?= $titulo_pago ?></h1>
+                
+                <p>
                     Tu pedido <strong>#<?= htmlspecialchars($pedido_id) ?></strong> por <strong>S/. <?= $total_final ?></strong> ha sido procesado con éxito.
                 </p>
                 
-                <hr class="my-4">
-
-                <div class="row text-start small-info-box">
-                    <div class="col-md-6 mb-3">
-                        <p class="fw-bold mb-1">Total Pagado:</p>
-                        <p class="mb-0 text-success fs-4 fw-bold">S/. <?= $total_final ?></p>
+                <!-- Detalles del Pedido -->
+                <div class="order-details">
+                    <div class="detail-row">
+                        <div class="detail-item">
+                            <div class="detail-label">💰 Total Pagado</div>
+                            <div class="detail-value highlight">S/. <?= $total_final ?></div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">💳 Método de Pago</div>
+                            <div class="detail-value"><?= ucfirst($metodo) ?></div>
+                        </div>
                     </div>
-                    <div class="col-md-6 mb-3">
-                        <p class="fw-bold mb-1">Método de Pago:</p>
-                        <p class="mb-0 fs-5"><?= ucfirst($metodo) ?></p>
-                    </div>
-                    <div class="col-md-6 mb-3">
-                        <p class="fw-bold mb-1">Estado del Pedido:</p>
-                        <p class="mb-0 text-primary fs-5 fw-bold"><?= htmlspecialchars($estado_pedido) ?></p>
-                    </div>
-                    <div class="col-md-6 mb-3">
-                        <p class="fw-bold mb-1">Recibirás un correo a:</p>
-                        <p class="mb-0 fs-5"><?= htmlspecialchars($_SESSION['email'] ?? 'N/A') ?></p>
+                    <div class="detail-row">
+                        <div class="detail-item">
+                            <div class="detail-label">📊 Estado</div>
+                            <div class="detail-value"><?= htmlspecialchars($estado_pedido) ?></div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">📧 Correo de Confirmación</div>
+                            <div class="detail-value"><?= htmlspecialchars($_SESSION['email'] ?? 'N/A') ?></div>
+                        </div>
                     </div>
                 </div>
 
-                <div class="alert alert-info mt-4">
-                    📦 Recibirás tu pedido en la dirección proporcionada. ¡Gracias por tu compra!
+                <!-- Mensaje de confirmación -->
+                <div class="success-message">
+                    <i class="bi bi-envelope-check me-2"></i>
+                    Hemos enviado la confirmación a tu correo electrónico.
                 </div>
 
+                <!-- Información adicional -->
+                <div class="alert alert-info">
+                    <i class="bi bi-info-circle-fill me-2"></i>
+                    <strong>¡Tu pedido está confirmado!</strong><br>
+                    Recibirás tu compra en la dirección que proporcionaste. Puedes seguimiento de tu pedido desde tu cuenta.
+                </div>
+
+                <!-- Botón para volver a la tienda -->
                 <div class="d-grid gap-2 d-md-flex justify-content-md-center mt-4">
-                    <a href="index.php" class="btn btn-primary btn-lg px-4 shadow">Volver a la Tienda</a>
+                    <a href="index.php" class="btn btn-primary px-5">
+                        <i class="bi bi-arrow-left me-2"></i>Volver a la Tienda
+                    </a>
                 </div>
             </div>
         </div>

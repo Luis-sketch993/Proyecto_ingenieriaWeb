@@ -24,13 +24,12 @@ if ($result->num_rows > 0) {
 
     // Verificar contraseña cifrada
     if (password_verify($password, $usuario['password'])) {
+        $_SESSION['usuario_id'] = $usuario['id'];
         $_SESSION['usuario'] = $usuario['nombre'];
         $_SESSION['email'] = $usuario['email'];
         $_SESSION['rol'] = $usuario['rol'];
         header("Location: index.php");
         exit();
-
-
     } 
     
 }

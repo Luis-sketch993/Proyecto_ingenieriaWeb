@@ -2,7 +2,14 @@
 session_start();
 require 'conexion.php'; 
 
-// 1. VALIDACIÓN
+// 1. VALIDACIÓN DE SESIÓN
+if (!isset($_SESSION['usuario_id']) || !isset($_SESSION['usuario'])) {
+    $_SESSION['error'] = "Debes iniciar sesión para realizar una compra.";
+    header("Location: login.php");
+    exit();
+}
+
+// 2. VALIDACIÓN DE DATOS
 if (!isset($_SESSION['usuario']) || empty($_SESSION['carrito']) || empty($_POST['telefono']) || empty($_POST['direccion']) || empty($_POST['metodo_pago'])) {
     $_SESSION['error'] = "Faltan datos o el carrito está vacío. (Incluyendo el método de pago)";
     header("Location: finalizar_compra.php");
@@ -97,12 +104,12 @@ try {
     // 6. REDIRECCIÓN BASADA EN EL MÉTODO DE PAGO
     if ($metodo_pago === 'yape') {
         // Redirige a la página de pago manual con QR de Yape
-        header("Location: pago_yape.php?pedido=" . $pedido_id);
+        echo "<script>window.location.href = 'pago_yape.php?pedido=" . $pedido_id . "';</script>";
         exit();
     } else {
         // Si es 'pasarela' (tarjeta), redirige al formulario de pago real/simulado.
         // El estado del pedido sigue siendo 'Pendiente de Pago' hasta que el pago se complete en la siguiente página.
-        header("Location: simular_pago_tarjeta.php?pedido=" . $pedido_id); 
+        echo "<script>window.location.href = 'simular_pago_tarjeta.php?pedido=" . $pedido_id . "';</script>";
         exit();
     }
 
