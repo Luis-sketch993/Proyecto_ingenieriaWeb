@@ -251,17 +251,33 @@ function redirectToPayment() {
         method: 'POST',
         body: formData
     })
-    .then(response => response.text())
+    // 1. Leer la respuesta como JSON
+    .then(response => {
+        // Manejar errores de respuesta HTTP (ej: 500)
+        if (!response.ok) {
+            // Intentar leer el texto si el estatus no fue OK, aunque esperamos JSON
+            return response.text().then(text => {
+                throw new Error('Error de servidor (' + response.status + '): ' + text.substring(0, 100) + '...');
+            });
+        }
+        return response.json(); 
+    })
     .then(data => {
-        if (data.includes('error') || data.includes('Error')) {
-            alert('❌ Error: ' + data);
+        // 2. Comprobar el estado devuelto por el JSON
+        if (data.status === 'success') {
+            // ÉXITO: Redireccionar el navegador manualmente
+            window.location.href = data.redirect_url;
+        } else {
+            // FALLO: Mostrar el mensaje de error del JSON (data.message)
+            alert('❌ Error al procesar: ' + (data.message || 'Error desconocido del servidor.'));
             btnPagar.innerHTML = btnText;
             btnPagar.disabled = false;
         }
     })
     .catch(error => {
-        console.error('Error:', error);
-        alert('❌ Error al procesar tu pago: ' + error);
+        // 3. Manejo de errores de red o parseo de JSON
+        console.error('Fetch Error:', error);
+        alert('❌ Error grave de conexión o formato de respuesta: ' + error.message);
         btnPagar.innerHTML = btnText;
         btnPagar.disabled = false;
     });

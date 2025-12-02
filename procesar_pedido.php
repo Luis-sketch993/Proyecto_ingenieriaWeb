@@ -1,23 +1,28 @@
 <?php
 session_start();
-require 'conexion.php'; 
+require 'conexion.php';
+
+// Establecer el encabezado a JSON desde el principio, para asegurar que no se envíe HTML accidentalmente.
+header('Content-Type: application/json');
+
+// Función auxiliar para enviar una respuesta de error JSON y salir.
+function sendJsonError($message) {
+    echo json_encode(['status' => 'error', 'message' => $message]);
+    exit();
+}
 
 // 1. VALIDACIÓN DE SESIÓN
 if (!isset($_SESSION['usuario_id']) || !isset($_SESSION['usuario'])) {
-    $_SESSION['error'] = "Debes iniciar sesión para realizar una compra.";
-    header("Location: login.php");
-    exit();
+    sendJsonError("Debes iniciar sesión para realizar una compra.");
 }
 
-// 2. VALIDACIÓN DE DATOS
-if (!isset($_SESSION['usuario']) || empty($_SESSION['carrito']) || empty($_POST['telefono']) || empty($_POST['direccion']) || empty($_POST['metodo_pago'])) {
-    $_SESSION['error'] = "Faltan datos o el carrito está vacío. (Incluyendo el método de pago)";
-    header("Location: finalizar_compra.php");
-    exit();
+// 2. VALIDACIÓN DE DATOS (Incluye la validación de POST)
+if (empty($_SESSION['carrito']) || empty($_POST['telefono']) || empty($_POST['direccion']) || empty($_POST['metodo_pago'])) {
+    sendJsonError("Faltan datos (teléfono, dirección, método de pago) o el carrito está vacío.");
 }
 
 // Suponemos que tienes el ID del usuario en sesión
-$usuario_id = $_SESSION['usuario_id'] ?? 1; // Usar ID de usuario 1 si no está logueado (solo para desarrollo)
+$usuario_id = $_SESSION['usuario_id'];
 $total_subtotal = 0;
 $costo_envio = 15.00; 
 
@@ -26,7 +31,7 @@ $telefono = $_POST['telefono'];
 $direccion = $_POST['direccion'];
 $metodo_pago = $_POST['metodo_pago']; // Capturamos el método de pago
 
-// 2. INICIO DE TRANSACCIÓN SQL
+// 3. INICIO DE TRANSACCIÓN SQL
 $conn->begin_transaction();
 
 try {
@@ -39,9 +44,8 @@ try {
     
     $total_final = $total_subtotal + $costo_envio;
 
-    // 3. INSERTAR PEDIDO
-    // El estado inicial es 'Pendiente de Pago' para ambos métodos,
-    // ya que la Tarjeta se pagará en la siguiente página y Yape requiere confirmación.
+    // 4. INSERTAR PEDIDO
+    // El estado inicial es 'Pendiente de Pago' para ambos métodos.
     $estado = 'Pendiente de Pago'; 
     $fecha = date('Y-m-d H:i:s');
 
@@ -60,7 +64,7 @@ try {
 
     $pedido_id = $conn->insert_id;
 
-    // 4. INSERTAR DETALLE Y ACTUALIZAR STOCK
+    // 5. INSERTAR DETALLE Y ACTUALIZAR STOCK
     $sql_detalle = "INSERT INTO detalle_pedidos (pedido_id, producto_id, cantidad, precio_unitario) VALUES (?, ?, ?, ?)";
     // Asumimos que la tabla productos tiene los campos id, stock
     $sql_stock = "UPDATE productos SET stock = stock - ? WHERE id = ? AND stock >= ?";
@@ -93,32 +97,29 @@ try {
         }
     }
 
-    // 5. SI LA INSERCIÓN FUE BIEN, CONFIRMAR CAMBIOS (Pedido creado, stock reservado)
+    // 6. CONFIRMAR CAMBIOS (Pedido creado, stock reservado)
     $conn->commit();
     
-    // CORRECCIÓN: NO VACIAR EL CARRITO AQUÍ.
-    // El carrito solo se debe vaciar cuando el pago esté 100% confirmado,
-    // lo cual sucede en 'pedido_exito.php'.
-    // unset($_SESSION['carrito']); // <--- ESTA LÍNEA SE HA QUITADO
-
-    // 6. REDIRECCIÓN BASADA EN EL MÉTODO DE PAGO
+    // 7. RESPUESTA JSON DE ÉXITO (INCLUYENDO LA URL DE REDIRECCIÓN)
     if ($metodo_pago === 'yape') {
-        // Redirige a la página de pago manual con QR de Yape
-        echo "<script>window.location.href = 'pago_yape.php?pedido=" . $pedido_id . "';</script>";
-        exit();
+        $destino = 'pago_yape.php';
     } else {
-        // Si es 'pasarela' (tarjeta), redirige al formulario de pago real/simulado.
-        // El estado del pedido sigue siendo 'Pendiente de Pago' hasta que el pago se complete en la siguiente página.
-        echo "<script>window.location.href = 'simular_pago_tarjeta.php?pedido=" . $pedido_id . "';</script>";
-        exit();
+        $destino = 'simular_pago_tarjeta.php';
     }
 
+    // Enviar respuesta JSON de éxito. JavaScript la leerá y ejecutará la redirección.
+    echo json_encode([
+        'status' => 'success',
+        'redirect_url' => $destino . '?pedido=' . $pedido_id
+    ]);
+    exit();
+
 } catch (Exception $e) {
-    // 7. SI ALGO FALLA, DESHACER TODOS LOS CAMBIOS
+    // 8. SI ALGO FALLA, DESHACER TODOS LOS CAMBIOS Y ENVIAR ERROR JSON
     $conn->rollback();
     error_log("Error de transacción de pedido: " . $e->getMessage()); 
-    $_SESSION['error'] = "⚠️ Ocurrió un error al procesar tu pedido. Por favor, inténtalo de nuevo. Detalle: " . $e->getMessage();
-    header("Location: finalizar_compra.php"); 
-    exit();
+    
+    // Enviar respuesta JSON de error. JavaScript la capturará y mostrará una alerta.
+    sendJsonError("⚠️ Ocurrió un error al procesar tu pedido. Por favor, inténtalo de nuevo. Detalle: " . $e->getMessage());
 }
 ?>
